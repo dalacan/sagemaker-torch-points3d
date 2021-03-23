@@ -1,0 +1,3 @@
+Run the following to copy container from public ecr to private
+
+sh copy_container.sh docker-train/Dockerfile sagemaker-torchpoints3d-training <registry_alias>

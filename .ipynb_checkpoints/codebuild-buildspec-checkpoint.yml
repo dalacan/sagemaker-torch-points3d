@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+    commands:
+      - pip install --upgrade --force-reinstall . awscli
+  
+  build:
+    commands:
+      - export PYTHONUNBUFFERED=TRUE
+      - export SAGEMAKER_PROJECT_NAME_ID="${SAGEMAKER_PROJECT_NAME}-${SAGEMAKER_PROJECT_ID}"
+      - echo "Clonding torch-points3d"
+      - git clone https://github.com/nicolas-chaulet/torch-points3d
+      - echo "Moving hydra configuration"
+      - mv scripts/custom.yaml conf/hydra/job_logging/custom.yaml
+      - echo "Loading sagemaker_training.py"
+      - mv scripts/sagemaker_train.py sagemaker_train.py
+      - echo "Building docker training image and uploading to ecr"
+      - sh build_and_push.sh docker-train/Dockerfile sagemaker-torchpoints3d-training
+      - echo "Building docker inference image and upload to ecr"
+      - sh build_and_push.sh docker-inference/Dockerfile sagemaker-torchpoints3d-inference

@@ -17,7 +17,6 @@ phases:
       - mv scripts/.dockerignore torch-points3d/.dockerignore
       - echo "Loading sagemaker_training.py"
       - mv scripts/sagemaker_train.py torch-points3d/sagemaker_train.py
-      - rmdir -rf scripts
       - echo "Building docker training image and uploading to ecr"
       - sh build_and_push.sh docker-train/Dockerfile sagemaker-torchpoints3d-training
       - echo "Building docker inference image and upload to ecr"

@@ -11,7 +11,7 @@ account=$(aws sts get-caller-identity --query Account --output text)
 
 # Get the region defined in the current configuration (default to us-west-2 if none defined)
 region=$(aws configure get region)
-region=${region:-us-east-1}
+region=${region:-ap-southeast-2}
 
 fullname="${account}.dkr.ecr.${region}.amazonaws.com/${image}:latest"
 

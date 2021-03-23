@@ -10,7 +10,7 @@ phases:
       - export PYTHONUNBUFFERED=TRUE
       - export SAGEMAKER_PROJECT_NAME_ID="${SAGEMAKER_PROJECT_NAME}-${SAGEMAKER_PROJECT_ID}"
       - echo "Clonding torch-points3d"
-      - git clone https://github.com/nicolas-chaulet/torch-points3d
+      - git clone https://github.com/nicolas-chaulet/torch-points3d .
       - echo "Moving hydra configuration"
       - mv scripts/custom.yaml conf/hydra/job_logging/custom.yaml
       - echo "Moving dockerignore"

@@ -15,6 +15,8 @@ phases:
       - git clone https://github.com/nicolas-chaulet/torch-points3d
       - echo "Moving hydra configuration"
       - mv scripts/custom.yaml conf/hydra/job_logging/custom.yaml
+      - echo "Moving dockerignore"
+      - mv scripts/.dockerignore .dockerignore
       - echo "Loading sagemaker_training.py"
       - mv scripts/sagemaker_train.py sagemaker_train.py
       - echo "Building docker training image and uploading to ecr"

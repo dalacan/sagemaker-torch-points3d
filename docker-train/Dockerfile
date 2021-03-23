@@ -18,7 +18,7 @@ RUN apt-get update \
 #Install dependant libraries for torch-points-3d
 RUN python3 -m pip install -U pip \
     && pip3 install setuptools>=41.0.0 \
-    && torch==1.7.1 torchvision==0.8.2 \
+    && pip3 install torch==1.7.1 torchvision==0.8.2 \
 #     && pip3 install torch==1.8.0 torchvision==0.9.0 \
     && pip3 install -U git+https://github.com/NVIDIA/MinkowskiEngine -v --no-deps --install-option="--force_cuda" --install-option="--cuda_home=/usr/local/cuda-11.1" \
 #     && pip3 install MinkowskiEngine --install-option="--force_cuda" \

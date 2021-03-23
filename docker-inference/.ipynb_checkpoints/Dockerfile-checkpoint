@@ -1,7 +1,7 @@
 ARG REGION=us-east-1
 
 # SageMaker PyTorch image
-FROM 763104351884.dkr.ecr.$REGION.amazonaws.com/pytorch-training:1.7.1-gpu-py36-cu110-ubuntu18.04
+FROM 763104351884.dkr.ecr.$REGION.amazonaws.com/pytorch-inference:1.7.1-cpu-py36-ubuntu18.04
 
 RUN apt-get update \
     && apt-get install -y --fix-missing --no-install-recommends\
@@ -15,20 +15,17 @@ RUN apt-get update \
 #Install dependant libraries for torch-points-3d
 RUN python3 -m pip install -U pip \
     && pip3 install setuptools>=41.0.0 \
-#     && torch==1.7.0 torchvision==0.8.1 \
-    && pip3 install torch==1.7.1 torchvision==0.8.2 \
-    && pip3 install MinkowskiEngine --install-option="--force_cuda" --install-option="--cuda_home=/usr/local/cuda" \
-    && pip3 install git+https://github.com/mit-han-lab/torchsparse.git@f79df704e2fb3ea912c31d57e910ea0edba03da4 -v \
-    && pip3 install pycuda\
-    && rm -rf /root/.cache 
+#     && pip3 install torch==1.7.0+cpu torchvision==0.8.1+cpu -f https://download.pytorch.org/whl/torch_stable.html \
+#     && pip3 install torch==1.7.1+cpu torchvision==0.8.2+cpu -f https://download.pytorch.org/whl/torch_stable.html \
+    && pip3 install MinkowskiEngine \
+    && pip3 install git+https://github.com/mit-han-lab/torchsparse.git@f79df704e2fb3ea912c31d57e910ea0edba03da4 \
+    && rm -rf /root/.cache
 
-COPY pyproject.toml /opt/ml/code/pyproject.toml
-COPY torch_points3d/ /opt/ml/code/torch_points3d/
-COPY README.md /opt/ml/code/README.md
+COPY torch-points3d/pyproject.toml /opt/ml/code/pyproject.toml
+COPY torch-points3d/torch_points3d/ /opt/ml/code/torch_points3d/
 # COPY poetry.lock poetry.lock
 
-RUN rm -rf ~/.cache/pip
-RUN cd /opt/ml/code/ && pip3 --no-cache-dir install . && rm -rf /root/.cache
+RUN cd /opt/ml/code/ && pip3 install . && rm -rf /root/.cache
 
 # COPY poetry.lock poetry.lock
 

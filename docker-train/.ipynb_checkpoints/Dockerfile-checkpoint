@@ -1,7 +1,10 @@
 ARG REGION=us-east-1
 
-FROM 763104351884.dkr.ecr.$REGION.amazonaws.com/pytorch-training:1.7.1-gpu-py36-cu110-ubuntu18.04
+# FROM 763104351884.dkr.ecr.$REGION.amazonaws.com/pytorch-training:1.7.1-gpu-py36-cu110-ubuntu18.04
+FROM 763104351884.dkr.ecr.$REGION.amazonaws.com/pytorch-training:1.8.0-gpu-py36-cu111-ubuntu18.04
 
+ARG CUDA_HOME=/usr/local/cuda
+    
 #Upgrade the OS
 RUN apt-get update \
     && apt-get install -y --fix-missing --no-install-recommends\
@@ -15,23 +18,21 @@ RUN apt-get update \
 #Install dependant libraries for torch-points-3d
 RUN python3 -m pip install -U pip \
     && pip3 install setuptools>=41.0.0 \
-    && torch==1.7.0 torchvision==0.8.1 \
-    && pip3 install MinkowskiEngine --install-option="--force_cuda" --install-option="--cuda_home=/usr/local/cuda" \
-    && pip3 install git+https://github.com/mit-han-lab/torchsparse.git@f79df704e2fb3ea912c31d57e910ea0edba03da4 -v \
+#     && torch==1.7.0 torchvision==0.8.1 \
+#     && pip3 install torch==1.8.0 torchvision==0.9.0 \
+#     && pip3 install MinkowskiEngine --install-option="--force_cuda" --install-option="--cuda_home=/usr/local/cuda" \
+    && pip3 install MinkowskiEngine --install-option="--force_cuda" \
+#     && pip3 install git+https://github.com/mit-han-lab/torchsparse.git@f79df704e2fb3ea912c31d57e910ea0edba03da4 -v \
+#     && pip install torch-scatter torch-sparse -f https://pytorch-geometric.com/whl/torch-1.7.0+cu110.html \
+    && pip install torch-scatter torch-sparse -f https://pytorch-geometric.com/whl/torch-1.8.0+cu111.html \
     && pip3 install pycuda\
     && rm -rf /root/.cache 
 
 #Install and fix issues with torch-points-3d
-COPY . /opt/ml/code
+COPY torch-points3d/. /opt/ml/code
 
 #RUN pip uninstall torch-scatter torch-sparse torch-cluster torch-points-kernels -y
 RUN rm -rf ~/.cache/pip
-# RUN pip install poetry
-# RUN poetry config virtualenvs.create false
-# RUN cd /opt/ml/code && poetry add pathlib2
-# RUN cd /opt/ml/code && poetry remove pathlib2
-# RUN cd /opt/ml/code && poetry install
-# RUN pip install --force-reinstall --no-cache-dir torch-geometric torch-sparse==latest+cu102 torch-scatter==latest+cu102 torch-cluster==latest+cu102  -f https://pytorch-geometric.com/whl/torch-1.5.0.html
 RUN cd /opt/ml/code && pip3 install . 
 
 #Sagemaker environment variables

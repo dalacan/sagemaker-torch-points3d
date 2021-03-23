@@ -21,9 +21,8 @@ RUN python3 -m pip install -U pip \
     && pip3 install git+https://github.com/mit-han-lab/torchsparse.git@f79df704e2fb3ea912c31d57e910ea0edba03da4 \
     && rm -rf /root/.cache
 
-COPY pyproject.toml /opt/ml/code/pyproject.toml
-COPY torch_points3d/ /opt/ml/code/torch_points3d/
-COPY README.md /opt/ml/code/README.md
+COPY torch-points3d/pyproject.toml /opt/ml/code/pyproject.toml
+COPY torch-points3d/torch_points3d/ /opt/ml/code/torch_points3d/
 # COPY poetry.lock poetry.lock
 
 RUN cd /opt/ml/code/ && pip3 install . && rm -rf /root/.cache

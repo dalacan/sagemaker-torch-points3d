@@ -12,11 +12,11 @@ phases:
       - echo "Clonding torch-points3d"
       - git clone https://github.com/nicolas-chaulet/torch-points3d
       - echo "Moving hydra configuration"
-      - mv scripts/custom.yaml conf/hydra/job_logging/custom.yaml
+      - mv scripts/custom.yaml torch-points3d/conf/hydra/job_logging/custom.yaml
       - echo "Moving dockerignore"
-      - mv scripts/.dockerignore .dockerignore
+      - mv scripts/.dockerignore torch-points3d/.dockerignore
       - echo "Loading sagemaker_training.py"
-      - mv scripts/sagemaker_train.py sagemaker_train.py
+      - mv scripts/sagemaker_train.py torch-points3d/sagemaker_train.py
       - rmdir -rf scripts
       - echo "Building docker training image and uploading to ecr"
       - sh build_and_push.sh docker-train/Dockerfile sagemaker-torchpoints3d-training

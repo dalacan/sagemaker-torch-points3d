@@ -15,14 +15,12 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN gcc --version
-
 #Install dependant libraries for torch-points-3d
 RUN python3 -m pip install -U pip \
     && pip3 install setuptools>=41.0.0 \
 #     && torch==1.7.0 torchvision==0.8.1 \
 #     && pip3 install torch==1.8.0 torchvision==0.9.0 \
-    && pip3 install MinkowskiEngine --install-option="--force_cuda" --install-option="--cuda_home=/usr/local/cuda" \
+    && pip3 install MinkowskiEngine --install-option="--force_cuda" --install-option="--cuda_home=/usr/local/cuda-11.1" \
 #     && pip3 install MinkowskiEngine --install-option="--force_cuda" \
 #     && pip3 install git+https://github.com/mit-han-lab/torchsparse.git@f79df704e2fb3ea912c31d57e910ea0edba03da4 -v \
 #     && pip install torch-scatter torch-sparse -f https://pytorch-geometric.com/whl/torch-1.7.0+cu110.html \

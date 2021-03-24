@@ -22,7 +22,7 @@ def main():
     args = parser.parse_args()
     
     # Pass in hydra configuration overrides
-    train_cmd = ["python", "train.py",
+    train_cmd = ["python3", "train.py",
         "hydra.run.dir={}".format(args.model_dir), 
         "hydra.job_logging.handlers.file_handler.filename={}/train.log".format(args.output_data_dir),
         "data.dataroot={}".format(args.train_dir),

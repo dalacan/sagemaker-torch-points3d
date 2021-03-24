@@ -1,8 +1,5 @@
-ARG REGION=us-east-1
-
 # SageMaker PyTorch image
 FROM ubuntu:18.04
-
 
 # Setup points3d inference
 RUN apt-get update \

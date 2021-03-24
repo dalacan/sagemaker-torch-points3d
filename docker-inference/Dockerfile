@@ -1,8 +1,10 @@
 ARG REGION=us-east-1
 
 # SageMaker PyTorch image
-FROM 763104351884.dkr.ecr.$REGION.amazonaws.com/pytorch-inference:1.7.1-cpu-py36-ubuntu18.04
+FROM ubuntu:18.04
 
+
+# Setup points3d inference
 RUN apt-get update \
     && apt-get install -y --fix-missing --no-install-recommends\
     libffi-dev libssl-dev build-essential libopenblas-dev libsparsehash-dev\
@@ -14,9 +16,9 @@ RUN apt-get update \
 
 #Install dependant libraries for torch-points-3d
 RUN python3 -m pip install -U pip \
+    && pip3 install multi-model-server sagemaker-inference \
     && pip3 install setuptools>=41.0.0 \
-#     && pip3 install torch==1.7.0+cpu torchvision==0.8.1+cpu -f https://download.pytorch.org/whl/torch_stable.html \
-#     && pip3 install torch==1.7.1+cpu torchvision==0.8.2+cpu -f https://download.pytorch.org/whl/torch_stable.html \
+    && pip3 install torch==1.7.0+cpu torchvision==0.8.1+cpu -f https://download.pytorch.org/whl/torch_stable.html \
     && pip3 install MinkowskiEngine \
     && pip3 install git+https://github.com/mit-han-lab/torchsparse.git@f79df704e2fb3ea912c31d57e910ea0edba03da4 \
     && rm -rf /root/.cache

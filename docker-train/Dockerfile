@@ -27,7 +27,7 @@ RUN python3 -m pip install -U pip \
     && rm -rf /root/.cache 
 
 #Install and fix issues with torch-points-3d
-COPY . /opt/ml/code
+COPY torch-points3d/. /opt/ml/code
 
 #RUN pip uninstall torch-scatter torch-sparse torch-cluster torch-points-kernels -y
 RUN rm -rf ~/.cache/pip

@@ -1,9 +1,18 @@
 # SageMaker PyTorch image
 FROM ubuntu:18.04
 
+# Set a docker label to advertise multi-model support on the container
+LABEL com.amazonaws.sagemaker.capabilities.multi-models=true
+# Set a docker label to enable container to use SAGEMAKER_BIND_TO_PORT environment variable if present
+LABEL com.amazonaws.sagemaker.capabilities.accept-bind-to-port=true
+
 # Setup points3d inference
 RUN apt-get update \
     && apt-get install -y --fix-missing --no-install-recommends\
+    ca-certificates \
+    openjdk-8-jdk-headless \
+    curl \
+    vim \
     libffi-dev libssl-dev build-essential libopenblas-dev libsparsehash-dev\
     python3-pip python3-dev python3-venv python3-setuptools\
     git iproute2 procps lsb-release \
@@ -13,7 +22,7 @@ RUN apt-get update \
 
 #Install dependant libraries for torch-points-3d
 RUN python3 -m pip install -U pip \
-    && pip3 install multi-model-server sagemaker-inference \
+    && pip3 install multi-model-server sagemaker-inference plyfile retrying \
     && pip3 install setuptools>=41.0.0 \
     && pip3 install torch==1.7.0+cpu torchvision==0.8.1+cpu -f https://download.pytorch.org/whl/torch_stable.html \
     && pip3 install MinkowskiEngine \
@@ -41,7 +50,6 @@ RUN mkdir -p /home/model-server/
 
 # Copy the default custom service file to handle incoming data and inference requests
 COPY docker-inference/model_handler.py /home/model-server/model_handler.py
-RUN pip install multi-model-server sagemaker-inference plyfile
 
 #Sagemaker environment variables
 ENV PYTHONUNBUFFERED=TRUE
@@ -49,7 +57,7 @@ ENV PYTHONDONTWRITEBYTECODE=TRUE
 ENV PATH="/opt/ml/code:${PATH}"
 
 # Define an entrypoint script for the docker image
-ENTRYPOINT ["python", "/usr/local/bin/dockerd-entrypoint.py"]
+ENTRYPOINT ["python3", "/usr/local/bin/dockerd-entrypoint.py"]
 
 # Define command to be passed to the entrypoint
 CMD ["serve"]

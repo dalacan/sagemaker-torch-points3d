@@ -18,6 +18,6 @@ phases:
       - echo "Loading sagemaker_training.py"
       - mv scripts/sagemaker_train.py torch-points3d/sagemaker_train.py
       - echo "Building docker training image and uploading to ecr"
-      - sh build_and_push.sh docker-train/Dockerfile sagemaker-torchpoints3d-training
+      - sh build_and_push.sh docker-train/Dockerfile ${ECR_TRAINING_CONTAINER}
       - echo "Building docker inference image and upload to ecr"
-      - sh build_and_push.sh docker-inference/Dockerfile sagemaker-torchpoints3d-inference
+      - sh build_and_push.sh docker-inference/Dockerfile ${ECR_INFERENCE_CONTAINER}
